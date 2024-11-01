@@ -3,10 +3,12 @@ export interface PokemonResult {
   url: string;
 }
 
+export type PageNumber = string | null;
+
 export interface ApiResponse {
   count: number;
-  next: string | null; 
-  previous: string | null;
+  next: PageNumber; 
+  previous: PageNumber;
   results: PokemonResult[];
 }
 

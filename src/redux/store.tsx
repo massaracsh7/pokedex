@@ -1,8 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/dist/query/react';
-
 import storeReducer from './Slice';
 import { pokemonApi } from './pokemonApi';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
 const rootReducer = combineReducers({
   storeReducer,
@@ -19,3 +18,7 @@ export const store = configureStore({
 });
 
 setupListeners(store.dispatch);
+
+export type RootState = ReturnType<typeof store.getState>; // RootState type
+
+export default store;

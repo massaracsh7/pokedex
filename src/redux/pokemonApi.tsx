@@ -7,11 +7,11 @@ export const pokemonApi = createApi({
   keepUnusedDataFor: process.env.NODE_ENV === 'test' ? 0 : 60,
   baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}` }),
   endpoints: (builder) => ({
-    fetchPokemons: builder.query<ApiResponse, string>({
-      query: (value) => `${value}`,
+    fetchPokemons: builder.query<ApiResponse, { offset: number; limit: number }>({
+      query: ({ offset, limit }) => `pokemon?offset=${offset}&limit=${limit}`,
     }),
-    fetchPokemonById: builder.query<Pokemon, number>({
-      query: (id) => `${API_URL}/${id}`,
+    fetchPokemonById: builder.query<Pokemon, {url:string}>({
+      query: (url) => `${url}`,
     }),
   }),
 })

@@ -1,34 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { API_URL } from '@/utils/constants';
-import { Pokemon, PageNumber, PokemonResult } from '@/types/types';
+import { PokemonResult } from '@/types/types';
 import { pokemonApi } from './pokemonApi';
 
 const initialState = {
   loading: false,
   cards: [] as PokemonResult[],
-  pagination: {
-    AllPages: 1,
-    pages: 1,
-    next: '' as PageNumber,
-    prev: '' as PageNumber,
-  },
-  countItems: 20,
+  offset: 0,
+  limit: 20,
   baseName: API_URL,
-  textError: 'Sorry, Your pokemon is not found. Please, ',
+  textError: 'Sorry, Your pokemon is not found. Please, try again.',
 };
 
 export const Slice = createSlice({
   name: 'slice',
   initialState,
   reducers: {
-    setCountItems(state, action) {
-      state.countItems = action.payload;
-    },
-    setCurrentPage(state, action) {
-      state.pagination.pages = action.payload;
+    incrementOffset(state) {
+      state.offset += state.limit;
     },
     setCards(state, action) {
-      state.cards = action.payload;
+      state.cards = [...state.cards, ...action.payload];
     },
     setBaseName(state, action) {
       state.baseName = action.payload;
@@ -36,17 +28,21 @@ export const Slice = createSlice({
     setLoading(state, action) {
       state.loading = action.payload;
     },
+    resetCards(state) {
+      state.cards = [];
+      state.offset = 0; 
+    }
   },
   extraReducers: (builder) => {
     builder.addMatcher(
       pokemonApi.endpoints.fetchPokemons.matchFulfilled,
       (state, { payload }) => {
-        state.cards = payload.results;
+        state.cards = [...state.cards, ...payload.results];
+        state.offset += state.limit;
       },
     );
   },
 });
 
 export default Slice.reducer;
-export const { setCountItems, setCurrentPage, setCards, setBaseName, setLoading } =
-  Slice.actions;
+export const { incrementOffset, setCards, setBaseName, setLoading, resetCards } = Slice.actions;

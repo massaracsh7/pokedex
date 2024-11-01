@@ -10,8 +10,8 @@ export const pokemonApi = createApi({
     fetchPokemons: builder.query<ApiResponse, { offset: number; limit: number }>({
       query: ({ offset, limit }) => `pokemon?offset=${offset}&limit=${limit}`,
     }),
-    fetchPokemonById: builder.query<Pokemon, {url:string}>({
-      query: (url) => `${url}`,
+    fetchPokemonById: builder.query<Pokemon, string>({
+      query: (url) => url,
     }),
   }),
 })

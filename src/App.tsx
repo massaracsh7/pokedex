@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from "@/pages/MainPage";
 import DetailPage from "@/pages/DetailPage";
 import NotFound from "@/pages/NotFound";
-import Layout from "@/components/Header";
+import Layout from "@/components/Layout";
 
 function App() {
   return (

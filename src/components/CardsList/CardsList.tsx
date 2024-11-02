@@ -1,15 +1,17 @@
 import { useFetchPokemons } from "@/redux/pokemonApi";
 import { RootState } from "@/redux/store";
-import { PokemonResult } from "@/types/types"
+import { PokemonResult } from "@/types/types";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CardItem from "../CardItem";
+import { incrementOffset } from "@/redux/Slice";
 
 const CardsList = () => {
-  const [offset, setOffset] = useState(0);
-  const [allPokemons, setAllPokemons] = useState<PokemonResult[]>([]);
   const limit = 20;
+  const offset = useSelector((state: RootState) => state.storeReducer.offset);
   const { data, isLoading } = useFetchPokemons({ offset, limit });
+
+  const [allPokemons, setAllPokemons] = useState<PokemonResult[]>([]);
 
   useEffect(() => {
     if (data) {
@@ -19,7 +21,7 @@ const CardsList = () => {
 
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !isLoading) {
-      setOffset((prevOffset) => prevOffset + limit);
+      incrementOffset();
     }
   };
 

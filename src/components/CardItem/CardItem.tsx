@@ -1,29 +1,40 @@
-import { useFetchById } from "@/redux/pokemonApi";
-import { PokemonResult } from '@/types/types';
+// CardItem.tsx
+import { useEffect } from 'react';
+import { useFetchById } from '@/redux/pokemonApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPokemonDetails } from '@/redux/Slice';
+import { RootState } from '@/redux/store';
 
 interface CardItemProps {
-  pokemon: PokemonResult;
+  pokemon: { name: string; url: string };
 }
 
 const CardItem = ({ pokemon }: CardItemProps) => {
-  const { data, isLoading, isError, isSuccess } = useFetchById(pokemon.url);
+  const dispatch = useDispatch();
+  const cachedPokemon = useSelector((state: RootState) => state.storeReducer.pokemonDetails[pokemon.name]);
 
-  if (isLoading) return <p>Loading...</p>;
+  const { data, isLoading, isError } = useFetchById(pokemon.url, {
+    skip: !!cachedPokemon, 
+  });
 
+  useEffect(() => {
+    if (data && !cachedPokemon) {
+      dispatch(addPokemonDetails(data)); 
+    }
+  }, [data, cachedPokemon, dispatch]);
+
+  const pokemonData = cachedPokemon || data;
+
+  if (isLoading && !cachedPokemon) return <p>Loading...</p>;
   if (isError) return <p>Error loading Pokémon data.</p>;
 
-  if (isSuccess && data) {
-    return (
-      <div>
-        <h2>{data.name}</h2>
-        <img src={data.sprites.front_default} alt={data.name} />
-        <p>Height: {data.height}</p>
-        <p>Weight: {data.weight}</p>
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div>
+      <h2>{pokemonData?.name}</h2>
+      <img src={pokemonData?.sprites.front_default} alt={pokemonData?.name} />
+      <p>Type: {pokemonData?.types.map(type => type.type.name).join(', ')}</p>
+    </div>
+  );
 };
 
 export default CardItem;

@@ -32,6 +32,13 @@ interface Sprites {
   front_default: string;
 }
 
+interface PokemonType {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+}
 export interface Pokemon {
   id: number;
   name: string;
@@ -40,4 +47,5 @@ export interface Pokemon {
   abilities: Ability[];
   moves: Move[];
   sprites: Sprites;
+  types: PokemonType[];
 }

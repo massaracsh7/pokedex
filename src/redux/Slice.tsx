@@ -1,48 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { API_URL } from '@/utils/constants';
-import { PokemonResult } from '@/types/types';
-import { pokemonApi } from './pokemonApi';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Pokemon, PokemonResult } from '@/types/types';
 
-const initialState = {
+interface PokemonState {
+  loading: boolean;
+  cards: PokemonResult[];
+  pokemonDetails: Record<string, Pokemon>;
+  offset: number;
+}
+
+const initialState: PokemonState = {
   loading: false,
-  cards: [] as PokemonResult[],
+  cards: [],
+  pokemonDetails: {},
   offset: 0,
-  limit: 20,
-  baseName: API_URL,
-  textError: 'Sorry, Your pokemon is not found. Please, try again.',
 };
 
-export const Slice = createSlice({
-  name: 'slice',
+const pokemonSlice = createSlice({
+  name: 'pokemon',
   initialState,
   reducers: {
-    incrementOffset(state) {
-      state.offset += state.limit;
-    },
-    setCards(state, action) {
-      state.cards = [...state.cards, ...action.payload];
-    },
-    setBaseName(state, action) {
-      state.baseName = action.payload;
-    },
-    setLoading(state, action) {
+    setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    resetCards(state) {
-      state.cards = [];
-      state.offset = 0; 
-    }
-  },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      pokemonApi.endpoints.fetchPokemons.matchFulfilled,
-      (state, { payload }) => {
-        state.cards = [...state.cards, ...payload.results];
-        state.offset += state.limit;
-      },
-    );
+    setCards(state, action: PayloadAction<PokemonResult[]>) {
+      state.cards = action.payload;
+    },
+    addPokemonDetails(state, action: PayloadAction<Pokemon>) {
+      state.pokemonDetails[action.payload.name] = action.payload;
+    },
+    incrementOffset(state) {
+      state.offset += 20;
+    },
   },
 });
 
-export default Slice.reducer;
-export const { incrementOffset, setCards, setBaseName, setLoading, resetCards } = Slice.actions;
+export const { setLoading, setCards, addPokemonDetails, incrementOffset } = pokemonSlice.actions;
+export default pokemonSlice.reducer;

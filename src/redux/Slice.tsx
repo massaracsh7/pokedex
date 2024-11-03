@@ -36,30 +36,24 @@ const pokemonSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        pokemonApi.endpoints.fetchPokemons.matchPending,
-        (state) => {
-          state.loading = true;
-        }
-      )
+      .addMatcher(pokemonApi.endpoints.fetchPokemons.matchPending, (state) => {
+        state.loading = true;
+      })
       .addMatcher(
         pokemonApi.endpoints.fetchPokemons.matchFulfilled,
         (state, action) => {
           state.loading = false;
           state.cards = [...state.cards, ...action.payload.results];
-        }
+        },
       )
-      .addMatcher(
-        pokemonApi.endpoints.fetchPokemons.matchRejected,
-        (state) => {
-          state.loading = false;
-        }
-      )
+      .addMatcher(pokemonApi.endpoints.fetchPokemons.matchRejected, (state) => {
+        state.loading = false;
+      })
       .addMatcher(
         pokemonApi.endpoints.fetchPokemonById.matchPending,
         (state) => {
           state.loading = true;
-        }
+        },
       )
       .addMatcher(
         pokemonApi.endpoints.fetchPokemonById.matchFulfilled,
@@ -68,13 +62,13 @@ const pokemonSlice = createSlice({
           if (payload) {
             state.pokemonDetails[payload.name] = payload;
           }
-        }
+        },
       )
       .addMatcher(
         pokemonApi.endpoints.fetchPokemonById.matchRejected,
         (state) => {
           state.loading = false;
-        }
+        },
       );
   },
 });

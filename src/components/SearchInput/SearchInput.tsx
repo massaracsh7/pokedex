@@ -1,8 +1,8 @@
-import { setSearch } from "@/redux/Slice";
-import { ChangeEvent, useState } from "react";
-import { useDispatch } from "react-redux";
+import { setSearch } from '@/redux/Slice';
+import { ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-const SearchInput = () => {
+const SearchInput: React.FC = () => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
 
@@ -10,12 +10,12 @@ const SearchInput = () => {
     const value = e.target.value;
     setSearchText(value);
     dispatch(setSearch(value));
-  }
+  };
 
   const clearSearch = () => {
     setSearchText('');
     dispatch(setSearch(''));
-  }
+  };
 
   return (
     <>
@@ -28,9 +28,8 @@ const SearchInput = () => {
       />
       <button onClick={() => dispatch(setSearch(searchText))}>Search</button>
       <button onClick={clearSearch}>Clear</button>
-      
     </>
   );
-}
+};
 
 export default SearchInput;

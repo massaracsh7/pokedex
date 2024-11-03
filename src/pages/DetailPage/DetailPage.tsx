@@ -1,8 +1,5 @@
+const DetailPage: React.FC = () => {
+  return <div>DetailPage</div>;
+};
 
- const DetailPage = () => {
-   return (
-     <div>DetailPage</div>
-   )
- }
- 
- export default DetailPage
+export default DetailPage;

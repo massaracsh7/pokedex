@@ -1,5 +1,5 @@
 export interface PokemonResult {
-  name: string; 
+  name: string;
   url: string;
 }
 
@@ -7,7 +7,7 @@ export type PageNumber = string | null;
 
 export interface ApiResponse {
   count: number;
-  next: PageNumber; 
+  next: PageNumber;
   previous: PageNumber;
   results: PokemonResult[];
 }
@@ -51,7 +51,7 @@ export interface Pokemon {
 }
 
 export interface typePokemon {
-  'name': string,
-  'id': string,
-  'pokemon': PokemonType[],
+  name: string;
+  id: string;
+  pokemon: PokemonType[];
 }

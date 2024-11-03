@@ -16,6 +16,9 @@ export const pokemonApi = createApi({
     fetchPokemonByName: builder.query<Pokemon, string>({
       query: (name) => `pokemon/${name.toLowerCase()}`,
     }),
+    fetchTypes: builder.query<Pokemon, string>({
+      query: (name) => `types/`,
+    }),
   }),
 });
 

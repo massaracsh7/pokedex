@@ -49,3 +49,9 @@ export interface Pokemon {
   sprites: Sprites;
   types: PokemonType[];
 }
+
+export interface typePokemon {
+  'name': string,
+  'id': string,
+  'pokemon': PokemonType[],
+}

@@ -1,8 +1,6 @@
-// CardItem.tsx
 import { useEffect } from 'react';
 import { useFetchById } from '@/redux/pokemonApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPokemonDetails } from '@/redux/Slice';
 import { RootState } from '@/redux/store';
 
 interface CardItemProps {
@@ -12,26 +10,25 @@ interface CardItemProps {
 const CardItem = ({ pokemon }: CardItemProps) => {
   const dispatch = useDispatch();
   const cachedPokemon = useSelector((state: RootState) => state.storeReducer.pokemonDetails[pokemon.name]);
+  const loading = useSelector((state: RootState) => state.storeReducer.loading); // Получаем состояние загрузки из Redux
+  const error = useSelector((state: RootState) => state.storeReducer.error); // Если у вас есть ошибка в состоянии
 
+  // Используем хук для получения данных по ID покемона
   const { data, isLoading, isError } = useFetchById(pokemon.url, {
-    skip: !!cachedPokemon, 
+    skip: !!cachedPokemon, // Пропускаем запрос, если данные уже кэшированы
   });
 
-  useEffect(() => {
-    if (data && !cachedPokemon) {
-      dispatch(addPokemonDetails(data)); 
-    }
-  }, [data, cachedPokemon, dispatch]);
-
+  // Объединяем данные из кэша и полученные данные
   const pokemonData = cachedPokemon || data;
 
-  if (isLoading && !cachedPokemon) return <p>Loading...</p>;
-  if (isError) return <p>Error loading Pokémon data.</p>;
+  // Обработка состояния загрузки и ошибки
+  if (loading || isLoading) return <p>Loading...</p>;
+  if (error || isError) return <p>Error loading Pokémon data.</p>; // Отображаем сообщение об ошибке
 
   return (
-    <div>
+    <div className="card-item">
       <h2>{pokemonData?.name}</h2>
-      <img src={pokemonData?.sprites.front_default} alt={pokemonData?.name} />
+      <img src={pokemonData?.sprites.front_default} loading="lazy" alt={pokemonData?.name} />
       <p>Type: {pokemonData?.types.map(type => type.type.name).join(', ')}</p>
     </div>
   );

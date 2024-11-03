@@ -4,6 +4,8 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import { configs as tsConfigs, ESLintUtils } from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import prettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
 export default ESLintUtils.mergeConfigs(
   {
@@ -13,6 +15,7 @@ export default ESLintUtils.mergeConfigs(
     extends: [
       js.configs.recommended,
       ...tsConfigs.recommended,
+      prettierConfig 
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -26,7 +29,8 @@ export default ESLintUtils.mergeConfigs(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      '@typescript-eslint': tsConfigs, 
+      '@typescript-eslint': tsConfigs,
+      'prettier': prettier 
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -35,6 +39,7 @@ export default ESLintUtils.mergeConfigs(
         'warn',
         { allowConstantExport: true },
       ],
+      'prettier/prettier': 'error', 
     },
     settings: {
       'import/resolver': {

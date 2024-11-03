@@ -6,6 +6,7 @@ interface PokemonState {
   cards: PokemonResult[];
   pokemonDetails: Record<string, Pokemon>;
   offset: number;
+  search: string;
 }
 
 const initialState: PokemonState = {
@@ -13,6 +14,7 @@ const initialState: PokemonState = {
   cards: [],
   pokemonDetails: {},
   offset: 0,
+  search: ''
 };
 
 const pokemonSlice = createSlice({
@@ -25,6 +27,9 @@ const pokemonSlice = createSlice({
     setCards(state, action: PayloadAction<PokemonResult[]>) {
       state.cards = action.payload;
     },
+    setSearch(state, action: PayloadAction<string>) {
+      state.search = action.payload;
+    },
     addPokemonDetails(state, action: PayloadAction<Pokemon>) {
       state.pokemonDetails[action.payload.name] = action.payload;
     },
@@ -34,5 +39,5 @@ const pokemonSlice = createSlice({
   },
 });
 
-export const { setLoading, setCards, addPokemonDetails, incrementOffset } = pokemonSlice.actions;
+export const { setLoading, setCards, addPokemonDetails, incrementOffset, setSearch } = pokemonSlice.actions;
 export default pokemonSlice.reducer;

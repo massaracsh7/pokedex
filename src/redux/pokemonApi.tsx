@@ -13,8 +13,12 @@ export const pokemonApi = createApi({
     fetchPokemonById: builder.query<Pokemon, string>({
       query: (url) => url,
     }),
+    fetchPokemonByName: builder.query<Pokemon, string>({
+      query: (name) => `pokemon/${name.toLowerCase()}`,
+    }),
   }),
-})
+});
 
 export const useFetchPokemons = pokemonApi.endpoints.fetchPokemons.useQuery;
 export const useFetchById = pokemonApi.endpoints.fetchPokemonById.useQuery;
+export const useFetchByName = pokemonApi.endpoints.fetchPokemonByName.useQuery;

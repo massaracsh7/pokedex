@@ -7,7 +7,7 @@ const DetailPage: React.FC = () => {
   const params = useParams();
   const detailName = params.name ?? '';
   const data = useSelector(
-    (state: RootState) => state.storeReducer.pokemonDetails[detailName],
+    (state: RootState) => state.pokemonReducer.pokemonDetails[detailName],
   );
   const navigation = useNavigate();
   const goBack = () => {

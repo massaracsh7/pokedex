@@ -1,4 +1,4 @@
-import { setSearch } from '@/redux/Slice';
+import { setSearch } from '@/redux/pokemonSlice';
 import { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 

@@ -5,6 +5,7 @@ import NotFound from '@/pages/NotFound';
 import Layout from '@/components/Layout';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import FavoritePage from './pages/FavoritePage/FavoritePage';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />} />
+            <Route path="/favorite" element={<FavoritePage />} />
             <Route path="/pokemon/:name" element={<DetailPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />

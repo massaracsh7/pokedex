@@ -6,7 +6,7 @@ import {
   useFetchTypesById,
 } from '@/redux/pokemonApi';
 import { RootState } from '@/redux/store';
-import { incrementOffset } from '@/redux/Slice';
+import { incrementOffset } from '@/redux/pokemonSlice';
 import CardItem from '../CardItem';
 import { API_URL } from '@/utils/constants';
 import { debounce } from 'lodash';
@@ -17,7 +17,7 @@ const CardsList: React.FC = () => {
   const limit = 20;
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonResult[]>([]);
   const { search, offset, cards, loading } = useSelector(
-    (state: RootState) => state.storeReducer,
+    (state: RootState) => state.pokemonReducer,
   );
   const selectedType = useSelector(
     (state: RootState) => state.typeReducer.selectedType,

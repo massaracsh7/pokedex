@@ -32,12 +32,17 @@ interface Sprites {
   front_default: string;
 }
 
-interface PokemonType {
+export interface PokemonSlot {
+  pokemon: PokemonResult;
   slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
+}
+export interface PokemonType {
+  pokemon: PokemonSlot[];
+}
+
+export interface TypeResults {
+  name: string;
+  url: string;
 }
 export interface Pokemon {
   id: number;
@@ -50,8 +55,9 @@ export interface Pokemon {
   types: PokemonType[];
 }
 
-export interface typePokemon {
-  name: string;
-  id: string;
-  pokemon: PokemonType[];
+export interface ApiResponseType {
+  count: number;
+  next: PageNumber;
+  previous: PageNumber;
+  results: TypeResults[];
 }

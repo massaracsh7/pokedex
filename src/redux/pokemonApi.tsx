@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '@/utils/constants';
-import { ApiResponse, Pokemon, typePokemon } from '@/types/types';
+import {
+  ApiResponse,
+  ApiResponseType,
+  Pokemon,
+  PokemonType,
+} from '@/types/types';
 
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
@@ -19,8 +24,11 @@ export const pokemonApi = createApi({
     fetchPokemonByName: builder.query<Pokemon, string>({
       query: (name) => `pokemon/${name.toLowerCase()}`,
     }),
-    fetchTypes: builder.query<typePokemon, string>({
-      query: () => `types/`,
+    fetchTypes: builder.query<ApiResponseType, void>({
+      query: () => `type/`,
+    }),
+    fetchTypesById: builder.query<PokemonType, string>({
+      query: (url) => url,
     }),
   }),
 });
@@ -28,3 +36,5 @@ export const pokemonApi = createApi({
 export const useFetchPokemons = pokemonApi.endpoints.fetchPokemons.useQuery;
 export const useFetchById = pokemonApi.endpoints.fetchPokemonById.useQuery;
 export const useFetchByName = pokemonApi.endpoints.fetchPokemonByName.useQuery;
+export const useFetchTypes = pokemonApi.endpoints.fetchTypes.useQuery;
+export const useFetchTypesById = pokemonApi.endpoints.fetchTypesById.useQuery;

@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storeReducer from './Slice';
+import typeReducer from './typeSlice';
 import { pokemonApi } from './pokemonApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 const rootReducer = combineReducers({
   storeReducer,
+  typeReducer,
   [pokemonApi.reducerPath]: pokemonApi.reducer,
 });
 

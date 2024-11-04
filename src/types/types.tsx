@@ -21,8 +21,10 @@ interface Ability {
   };
 }
 
-interface Move {
-  move: {
+interface StatInfo {
+  base_stat: number;
+  effort: number;
+  stat: {
     name: string;
     url: string;
   };
@@ -50,11 +52,18 @@ export interface Pokemon {
   height: number;
   weight: number;
   abilities: Ability[];
-  moves: Move[];
+  stats: StatInfo[];
   sprites: Sprites;
-  types: PokemonType[];
+  types: TypesOfPokemon[];
 }
 
+export interface TypesOfPokemon {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+}
 export interface ApiResponseType {
   count: number;
   next: PageNumber;

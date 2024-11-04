@@ -13,7 +13,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />} />
-            <Route path="/pokemon/:id" element={<DetailPage />} />
+            <Route path="/pokemon/:name" element={<DetailPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

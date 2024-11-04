@@ -2,6 +2,7 @@ import { useFetchById } from '@/redux/pokemonApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { PokemonResult } from '@/types/types';
+import { Link } from 'react-router-dom';
 
 interface CardItemProps {
   pokemon: PokemonResult;
@@ -23,15 +24,19 @@ const CardItem: React.FC<CardItemProps> = ({ pokemon }) => {
   if (error || isError) return <p>Error loading Pokémon data.</p>;
 
   return (
-    <div className="card-item">
-      <h2>{pokemonData?.name}</h2>
-      <img
-        src={pokemonData?.sprites.front_default}
-        loading="lazy"
-        alt={pokemonData?.name}
-      />
-      <p>Type: {pokemonData?.types.map((type) => type.type.name).join(', ')}</p>
-    </div>
+    <Link to={`pokemon/${pokemonData?.name}`}>
+      <li className="card-item">
+        <h2>{pokemonData?.name}</h2>
+        <img
+          src={pokemonData?.sprites.front_default}
+          loading="lazy"
+          alt={pokemonData?.name}
+        />
+        <p>
+          Type: {pokemonData?.types.map((item) => item.type.name).join(', ')}
+        </p>
+      </li>
+    </Link>
   );
 };
 

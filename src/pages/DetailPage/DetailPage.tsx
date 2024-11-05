@@ -1,7 +1,7 @@
 import DetailInfo from '@/components/DetailInfo';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const DetailPage: React.FC = () => {
   const params = useParams();
@@ -9,13 +9,8 @@ const DetailPage: React.FC = () => {
   const data = useSelector(
     (state: RootState) => state.pokemonReducer.pokemonDetails[detailName],
   );
-  const navigation = useNavigate();
-  const goBack = () => {
-    navigation('/', { replace: true });
-  };
   return (
-    <div>
-      <button onClick={goBack}>Catalog</button>
+    <div className="container">
       <DetailInfo pokemon={data} />
     </div>
   );

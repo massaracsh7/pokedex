@@ -9,12 +9,15 @@ import {
   PokemonImage,
   PokemonTypes,
 } from '@/components/Pokemon';
+import Loader from '@/components/Loader';
 import {
   makeSelectPokemonDetails,
   makeSelectFavorites,
   makeSelectLoadingStatus,
   makeSelectError,
 } from '@/redux/selectors';
+
+import styles from './CardItem.module.scss';
 
 interface CardItemProps {
   pokemon: PokemonResult;
@@ -55,16 +58,24 @@ const CardItem: React.FC<CardItemProps> = ({
     }
   };
 
-  if (status === 'loading' || isLoading) return <p>Loading...</p>;
-  if (status === 'failed' || isError || error)
-    return <p>Error loading Pokémon data.</p>;
+  if (status === 'loading' || isLoading) {
+    return <Loader isLoading={true} height="40%" width="40%" />;
+  }
+
+  if (status === 'failed' || isError || error) {
+    return (
+      <div className={styles.card__error}>
+        Error loading Pokémon data: {error || 'Unknown error'}
+      </div>
+    );
+  }
 
   return (
-    <li className="card-item">
+    <li className={styles.card}>
       {pokemonData ? (
         <>
           <Link to={`${linkPrefix}/${pokemonData.name}`}>
-            <h2>{pokemonData.name}</h2>
+            <h2 className={styles.card__name}>{pokemonData.name}</h2>
             <PokemonImage pokemon={pokemonData} />
             <PokemonTypes types={pokemonData.types} />
           </Link>

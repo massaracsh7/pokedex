@@ -10,6 +10,7 @@ import {
   PokemonTypes,
   PokemonStats,
 } from '@/components/Pokemon';
+import styles from './DetailInfo.module.scss';
 
 interface DetailProps {
   pokemon: Pokemon;
@@ -32,16 +33,24 @@ const DetailInfo: React.FC<DetailProps> = ({ pokemon }) => {
   };
 
   return (
-    <div>
-      <h2>{pokemon.name}</h2>
+    <div className={styles.detail}>
+      <h2 className={styles.detail__title}>{pokemon.name}</h2>
       <PokemonImage pokemon={pokemon} />
       <PokemonTypes types={pokemon.types} />
-      <p>Weight: {pokemon.weight}</p>
-      <p>Height: {pokemon.height}</p>
-      <p>
-        Ability: {pokemon.abilities.map((item) => item.ability.name).join(', ')}
-      </p>
-      <PokemonStats stats={pokemon.stats} />
+      <div className={styles.detail__inner}>
+        <div>
+          <p className={styles.detail__info}>
+            <b>Weight:</b> {pokemon.weight}
+          </p>
+          <p className={styles.detail__info}></p>
+          <b>Height:</b> {pokemon.height}
+          <p className={styles.detail__info}>
+            <b>Ability: </b>
+            {pokemon.abilities.map((item) => item.ability.name).join(', ')}
+          </p>
+        </div>
+        <PokemonStats stats={pokemon.stats} />
+      </div>
       <FavoriteButton isFavorite={isFavorite} onToggle={handleFavoriteToggle} />
     </div>
   );

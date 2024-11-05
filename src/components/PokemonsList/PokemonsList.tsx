@@ -76,7 +76,6 @@ const CardsList: React.FC = () => {
 
   return (
     <div>
-      <h2>Pokémon List</h2>
       {status === 'failed' && <p>Error loading Pokémon data</p>}
       {!isLoading && search && filteredPokemons.length === 0 && (
         <p>No Pokémon found for "{search}"</p>

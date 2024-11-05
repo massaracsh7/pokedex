@@ -1,0 +1,6 @@
+@use '@/assets/styles/placeholder' as *;
+
+.inner {
+  @extend %flex-space;
+  margin-bottom: 2rem;
+}

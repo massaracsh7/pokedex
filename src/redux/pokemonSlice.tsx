@@ -27,9 +27,6 @@ const pokemonSlice = createSlice({
     setSearch(state, action: PayloadAction<string>) {
       state.search = action.payload;
     },
-    setCards(state, action: PayloadAction<PokemonResult[]>) {
-      state.cards = [...state.cards, ...action.payload];
-    },
     incrementOffset(state) {
       state.offset += 20;
     },
@@ -81,5 +78,5 @@ const pokemonSlice = createSlice({
   },
 });
 
-export const { setSearch, incrementOffset, setCards } = pokemonSlice.actions;
+export const { setSearch, incrementOffset } = pokemonSlice.actions;
 export default pokemonSlice.reducer;

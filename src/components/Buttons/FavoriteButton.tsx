@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import styles from './FavoriteButton.module.scss';
 
 interface FavoriteButtonProps {
   isFavorite: boolean;
@@ -12,9 +13,9 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 }) => {
   return (
     <button
+      className={styles.favorite}
       onClick={onToggle}
       aria-label="Toggle Favorite"
-      className="favorite-button"
     >
       {isFavorite ? <FaHeart color="red" /> : <FaRegHeart color="gray" />}
     </button>

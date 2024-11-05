@@ -4,3 +4,7 @@
   font-weight: $weight;
   font-style: $style;
 }
+
+@mixin transition($property, $duration: 0.3s, $easing: ease-in-out) {
+  transition: $property $duration $easing;
+}

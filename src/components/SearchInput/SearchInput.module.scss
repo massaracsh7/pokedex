@@ -1,0 +1,27 @@
+@use '@/assets/styles/variables' as *;
+@use '@/assets/styles/placeholder' as *;
+@use '@/assets/styles/mixins' as *;
+
+.search {
+  @extend %flex-space;
+  width: 80%;
+  padding-top: 1rem;
+
+  &__input {
+    width: 80%;
+    margin-right: 10px;
+    border-radius: 7px;
+    padding: 7px;
+    transition: border-color, box-shadow 0.3s;
+  }
+
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 5px rgba($primary-color, 0.5);
+  }
+}

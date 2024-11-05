@@ -1,4 +1,4 @@
-import CardsList from '@/components/CardsList';
+import PokemonsList from '@/components/PokemonsList';
 import SearchInput from '@/components/SearchInput';
 import FilterTypes from '@/components/FilterTypes';
 
@@ -8,7 +8,7 @@ const MainPage: React.FC = () => {
       <div>MainPage</div>
       <SearchInput />
       <FilterTypes />
-      <CardsList />
+      <PokemonsList />
     </>
   );
 };

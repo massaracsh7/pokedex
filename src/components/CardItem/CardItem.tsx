@@ -4,7 +4,17 @@ import { RootState } from '@/redux/store';
 import { PokemonResult } from '@/types/types';
 import { Link } from 'react-router-dom';
 import { toggleFavorite } from '@/redux/favoriteSlice';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import {
+  FavoriteButton,
+  PokemonImage,
+  PokemonTypes,
+} from '@/components/Pokemon';
+import {
+  makeSelectPokemonDetails,
+  makeSelectFavorites,
+  makeSelectLoadingStatus,
+  makeSelectError,
+} from '@/redux/selectors';
 
 interface CardItemProps {
   pokemon: PokemonResult;
@@ -16,16 +26,19 @@ const CardItem: React.FC<CardItemProps> = ({
   linkPrefix = '/pokemon',
 }) => {
   const dispatch = useDispatch();
-  const cachedPokemon = useSelector(
-    (state: RootState) => state.pokemonReducer.pokemonDetails[pokemon.name],
+
+  const cachedPokemonSelector = makeSelectPokemonDetails();
+  const favoritesSelector = makeSelectFavorites();
+  const loadingStatusSelector = makeSelectLoadingStatus();
+  const errorSelector = makeSelectError();
+
+  const cachedPokemon = useSelector((state: RootState) =>
+    cachedPokemonSelector(state, pokemon.name),
   );
-  const favorites = useSelector(
-    (state: RootState) => state.favoriteReducer.favorites,
-  );
-  const loading = useSelector(
-    (state: RootState) => state.pokemonReducer.loading,
-  );
-  const error = useSelector((state: RootState) => state.pokemonReducer.error);
+  const favorites = useSelector(favoritesSelector);
+  const status = useSelector(loadingStatusSelector);
+  const error = useSelector(errorSelector);
+
   const { data, isLoading, isError } = useFetchById(pokemon.url, {
     skip: !!cachedPokemon,
   });
@@ -42,29 +55,27 @@ const CardItem: React.FC<CardItemProps> = ({
     }
   };
 
-  if (loading || isLoading) return <p>Loading...</p>;
-  if (error || isError) return <p>Error loading Pokémon data.</p>;
+  if (status === 'loading' || isLoading) return <p>Loading...</p>;
+  if (status === 'failed' || isError || error)
+    return <p>Error loading Pokémon data.</p>;
 
   return (
     <li className="card-item">
-      <Link to={`${linkPrefix}/${pokemonData?.name}`}>
-        <h2>{pokemonData?.name}</h2>
-        <img
-          src={pokemonData?.sprites.front_default}
-          loading="lazy"
-          alt={pokemonData?.name}
-        />
-        <p>
-          Type: {pokemonData?.types.map((item) => item.type.name).join(', ')}
-        </p>
-      </Link>
-      <button
-        onClick={handleFavoriteToggle}
-        aria-label="Toggle Favorite"
-        className="favorite-button"
-      >
-        {isFavorite ? <FaHeart color="red" /> : <FaRegHeart color="gray" />}
-      </button>
+      {pokemonData ? (
+        <>
+          <Link to={`${linkPrefix}/${pokemonData.name}`}>
+            <h2>{pokemonData.name}</h2>
+            <PokemonImage pokemon={pokemonData} />
+            <PokemonTypes types={pokemonData.types} />
+          </Link>
+          <FavoriteButton
+            isFavorite={isFavorite}
+            onToggle={handleFavoriteToggle}
+          />
+        </>
+      ) : (
+        <p>Pokemon data not available</p>
+      )}
     </li>
   );
 };

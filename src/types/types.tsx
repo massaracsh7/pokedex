@@ -3,6 +3,8 @@ export interface PokemonResult {
   url: string;
 }
 
+export type LoadStatus = 'idle' | 'loading' | 'success' | 'failed';
+
 export type PageNumber = string | null;
 
 export interface ApiResponse {
@@ -70,3 +72,7 @@ export interface ApiResponseType {
   previous: PageNumber;
   results: TypeResults[];
 }
+
+export type PokemonDetails = Pokemon;
+export type StatusType = LoadStatus;
+export type Favorite = PokemonResult;

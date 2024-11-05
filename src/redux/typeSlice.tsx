@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TypeResults } from '@/types/types';
+import { TypeResults, LoadStatus } from '@/types/types';
 import { pokemonApi } from '@/redux/pokemonApi';
 
 interface TypeState {
   types: TypeResults[];
-  loading: boolean;
+  status: LoadStatus;
   error: string;
   selectedType: string;
 }
 
 const initialState: TypeState = {
   types: [],
-  loading: false,
+  status: 'idle',
   error: '',
   selectedType: '',
 };
@@ -27,19 +27,19 @@ const typeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(pokemonApi.endpoints.fetchTypes.matchPending, (state) => {
-        state.loading = true;
+        state.status = 'loading';
       })
       .addMatcher(
         pokemonApi.endpoints.fetchTypes.matchFulfilled,
         (state, action) => {
-          state.loading = false;
+          state.status = 'success';
           state.types = action.payload.results;
         },
       )
       .addMatcher(
         pokemonApi.endpoints.fetchTypes.matchRejected,
         (state, action) => {
-          state.loading = false;
+          state.status = 'failed';
           state.error = action.error.message || 'Failed to fetch types';
         },
       );

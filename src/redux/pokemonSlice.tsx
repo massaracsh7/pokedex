@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pokemonApi } from '@/redux/pokemonApi';
-import { Pokemon, PokemonResult } from '@/types/types';
+import { LoadStatus, Pokemon, PokemonResult } from '@/types/types';
 
 interface PokemonState {
-  loading: boolean;
+  status: LoadStatus;
   cards: PokemonResult[];
   pokemonDetails: Record<string, Pokemon>;
   offset: number;
@@ -12,7 +12,7 @@ interface PokemonState {
 }
 
 const initialState: PokemonState = {
-  loading: false,
+  status: 'idle',
   cards: [],
   pokemonDetails: {},
   offset: 0,
@@ -37,28 +37,34 @@ const pokemonSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(pokemonApi.endpoints.fetchPokemons.matchPending, (state) => {
-        state.loading = true;
+        state.status = 'loading';
+        state.error = null;
       })
       .addMatcher(
         pokemonApi.endpoints.fetchPokemons.matchFulfilled,
         (state, action) => {
-          state.loading = false;
+          state.status = 'success';
           state.cards = [...state.cards, ...action.payload.results];
         },
       )
-      .addMatcher(pokemonApi.endpoints.fetchPokemons.matchRejected, (state) => {
-        state.loading = false;
-      })
+      .addMatcher(
+        pokemonApi.endpoints.fetchPokemons.matchRejected,
+        (state, action) => {
+          state.status = 'failed';
+          state.error = action.error?.message || 'Failed to fetch Pokémon data';
+        },
+      )
       .addMatcher(
         pokemonApi.endpoints.fetchPokemonById.matchPending,
         (state) => {
-          state.loading = true;
+          state.status = 'loading';
+          state.error = null;
         },
       )
       .addMatcher(
         pokemonApi.endpoints.fetchPokemonById.matchFulfilled,
         (state, { payload }) => {
-          state.loading = false;
+          state.status = 'success';
           if (payload) {
             state.pokemonDetails[payload.name] = payload;
           }
@@ -66,8 +72,10 @@ const pokemonSlice = createSlice({
       )
       .addMatcher(
         pokemonApi.endpoints.fetchPokemonById.matchRejected,
-        (state) => {
-          state.loading = false;
+        (state, action) => {
+          state.status = 'failed';
+          state.error =
+            action.error?.message || 'Failed to fetch Pokémon details';
         },
       );
   },

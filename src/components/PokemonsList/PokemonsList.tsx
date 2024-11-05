@@ -7,16 +7,16 @@ import {
 } from '@/redux/pokemonApi';
 import { RootState } from '@/redux/store';
 import { incrementOffset } from '@/redux/pokemonSlice';
-import CardItem from '../CardItem';
 import { API_URL } from '@/utils/constants';
 import { debounce } from 'lodash';
 import { PokemonResult } from '@/types/types';
+import CardList from '../CardList';
 
 const CardsList: React.FC = () => {
   const dispatch = useDispatch();
   const limit = 20;
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonResult[]>([]);
-  const { search, offset, cards, loading } = useSelector(
+  const { search, offset, cards, status } = useSelector(
     (state: RootState) => state.pokemonReducer,
   );
   const selectedType = useSelector(
@@ -55,7 +55,7 @@ const CardsList: React.FC = () => {
   const debouncedHandleScroll = debounce(() => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
-      !isLoading &&
+      status !== 'loading' &&
       !search
     ) {
       dispatch(incrementOffset());
@@ -77,16 +77,12 @@ const CardsList: React.FC = () => {
   return (
     <div>
       <h2>Pokémon List</h2>
+      {status === 'failed' && <p>Error loading Pokémon data</p>}
       {!isLoading && search && filteredPokemons.length === 0 && (
         <p>No Pokémon found for "{search}"</p>
       )}
-      <ul className="cards__list">
-        {filteredPokemons.map((pokemon, index) => {
-          const uniqueId = pokemon.url.split('/').slice(-2, -1)[0];
-          return <CardItem key={`${uniqueId}-${index}`} pokemon={pokemon} />;
-        })}
-      </ul>
-      {(loading || isLoading) && <p>Loading...</p>}
+      <CardList pokemons={filteredPokemons} />
+      {status === 'loading' && <p>Loading Pokémon...</p>}
     </div>
   );
 };

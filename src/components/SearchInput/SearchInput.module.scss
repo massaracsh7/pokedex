@@ -4,8 +4,13 @@
 
 .search {
   @extend %flex-space;
+  gap: 1rem;
   width: 80%;
   padding-top: 1rem;
+
+  @include media-tablet {
+    flex-wrap: wrap;
+  }
 
   &__input {
     width: 80%;
@@ -13,6 +18,10 @@
     border-radius: 7px;
     padding: 7px;
     transition: border-color, box-shadow 0.3s;
+
+    @include media-tablet {
+      width: 100%;
+    }
   }
 
   &:hover {

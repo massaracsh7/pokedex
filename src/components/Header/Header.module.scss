@@ -6,7 +6,6 @@
   background-color: $secondary-color;
   color: $white-color;
   padding: 0.94rem 1.88rem;
-  @extend %flex-space;
 
   &__title {
     @extend %font-secondary;
@@ -24,6 +23,10 @@
   &__list {
     display: flex;
     gap: 10rem;
+
+    @include media-mobile {
+      display: block;
+    }
   }
 
   &__item {

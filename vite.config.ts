@@ -16,7 +16,7 @@ export default defineConfig({
       }
     }
   },
-  base: '/pokedex',
+  //base: '/pokedex',
   plugins: [react(), imagetools()],
   resolve: {
     alias: {

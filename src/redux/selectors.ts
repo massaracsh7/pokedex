@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { RootState } from './store';
-import { PokemonDetails, StatusType, Favorite } from '@/types/types'; // Adjust as per actual types in your project
+import { PokemonDetails, StatusType, Favorite } from '@/types/types';
 
 export const selectPokemonDetails = (
   state: RootState,

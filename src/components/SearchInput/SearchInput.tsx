@@ -11,16 +11,16 @@ const SearchInput: React.FC = () => {
   const [searchText, setSearchText] = useState('');
 
   const debouncedSearch = debounce((value: string) => {
-    if (value.length >= 3 || value === '') {
-      dispatch(setSearch(value));
-    }
-  }, 300);
+    dispatch(setSearch(value));
+  }, 1000);
 
   const handleSearch = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setSearchText(value);
-      debouncedSearch(value);
+      if (value.length >= 4 || value === '') {
+        debouncedSearch(value);
+      }
     },
     [debouncedSearch],
   );

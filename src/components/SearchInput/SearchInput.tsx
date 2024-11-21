@@ -11,16 +11,16 @@ const SearchInput: React.FC = () => {
   const [searchText, setSearchText] = useState('');
 
   const debouncedSearch = debounce((value: string) => {
-    dispatch(setSearch(value));
+    if (value.trim().length >= 4 || value.trim() === '') {
+      dispatch(setSearch(value.trim()));
+    }
   }, 1000);
 
   const handleSearch = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setSearchText(value);
-      if (value.length >= 4 || value === '') {
-        debouncedSearch(value);
-      }
+      debouncedSearch(value);
     },
     [debouncedSearch],
   );
@@ -28,23 +28,25 @@ const SearchInput: React.FC = () => {
   const clearSearch = () => {
     setSearchText('');
     dispatch(setSearch(''));
+    debouncedSearch.cancel();
   };
 
-  const submitSearch = () => dispatch(setSearch(searchText));
+  const submitSearch = () => {
+    debouncedSearch(searchText);
+  };
+
   return (
-    <>
-      <div className={styles.search}>
-        <input
-          type="search"
-          onChange={handleSearch}
-          value={searchText}
-          placeholder="Enter name"
-          className={styles.search__input}
-        />
-        <IconButton icon={FaSearch} label="Search" onClick={submitSearch} />
-        <IconButton icon={FaTimes} label="Clear" onClick={clearSearch} />
-      </div>
-    </>
+    <div className={styles.search}>
+      <input
+        type="search"
+        onChange={handleSearch}
+        value={searchText}
+        placeholder="Enter name"
+        className={styles.search__input}
+      />
+      <IconButton icon={FaSearch} label="Search" onClick={submitSearch} />
+      <IconButton icon={FaTimes} label="Clear" onClick={clearSearch} />
+    </div>
   );
 };
 

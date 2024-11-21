@@ -5,8 +5,17 @@ interface FavoriteState {
   favorites: PokemonResult[];
 }
 
+const loadFavorites = (): PokemonResult[] => {
+  const faves = localStorage.getItem('favoritePokemons');
+  return faves ? JSON.parse(faves) : [];
+};
+
+const saveFavorites = (favorites: PokemonResult[]) => {
+  localStorage.setItem('favoritePokemons', JSON.stringify(favorites));
+};
+
 const initialState: FavoriteState = {
-  favorites: [],
+  favorites: loadFavorites(),
 };
 
 const favoriteSlice = createSlice({
@@ -25,6 +34,7 @@ const favoriteSlice = createSlice({
       } else {
         state.favorites.push(action.payload);
       }
+      saveFavorites(state.favorites);
     },
   },
 });

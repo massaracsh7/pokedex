@@ -11,10 +11,19 @@ interface PokemonState {
   error: string | null;
 }
 
+const loadPokemons = (): Record<string, Pokemon> => {
+  const details = localStorage.getItem('pokemonDetails');
+  return details ? JSON.parse(details) : {};
+};
+
+const savePokemons = (pokemonDetails: Record<string, Pokemon>) => {
+  localStorage.setItem('pokemonDetails', JSON.stringify(pokemonDetails));
+};
+
 const initialState: PokemonState = {
   status: 'idle',
   cards: [],
-  pokemonDetails: {},
+  pokemonDetails: loadPokemons(),
   offset: 0,
   search: '',
   error: null,
@@ -64,6 +73,7 @@ const pokemonSlice = createSlice({
           state.status = 'success';
           if (payload) {
             state.pokemonDetails[payload.name] = payload;
+            savePokemons(state.pokemonDetails);
           }
         },
       )

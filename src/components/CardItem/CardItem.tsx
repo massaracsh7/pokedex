@@ -74,7 +74,10 @@ const CardItem: React.FC<CardItemProps> = ({
     <li className={styles.card}>
       {pokemonData ? (
         <>
-          <Link to={`${linkPrefix}/${pokemonData.name}`}>
+          <Link
+            to={`${linkPrefix}/${pokemonData.name}`}
+            className={styles.card__link}
+          >
             <h2 className={styles.card__name}>{pokemonData.name}</h2>
             <PokemonImage pokemon={pokemonData} />
             <PokemonTypes types={pokemonData.types} />
